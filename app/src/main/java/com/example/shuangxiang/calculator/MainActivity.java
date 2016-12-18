@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText etE16X;
     private EditText etE16T;
     private StringBuilder allShow;
+    private int count=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +42,29 @@ public class MainActivity extends AppCompatActivity {
                 boolean emptyAD = etad.getText().toString().isEmpty();
                 boolean emptyDA = etda.getText().toString().isEmpty();
                 boolean emptyTC = ettc.getText().toString().isEmpty();
-
-
-                if (emptyAD || emptyDA || emptyTC) {
+                boolean emptyPT = etpt.getText().toString().isEmpty();
+                boolean emptyE08X08T = etE08X08T.getText().toString().isEmpty();
+                boolean emptyE08X08R = etE08X08R.getText().toString().isEmpty();
+                boolean emptyE16X = etE16X.getText().toString().isEmpty();
+                boolean emptyE16T = etE16T.getText().toString().isEmpty();
+                if (emptyAD || emptyDA || emptyTC||emptyPT||emptyE08X08T||emptyE08X08R||emptyE16X||emptyE16T) {
                     Toast.makeText(MainActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
                 } else {
                     int adNum = Integer.parseInt(etad.getText().toString());
                     int daNum = Integer.parseInt(etda.getText().toString());
                     int tcNum = Integer.parseInt(ettc.getText().toString());
+                    int ptNum = Integer.parseInt(etpt.getText().toString());
+                    int e08X08TNum = Integer.parseInt(etE08X08T.getText().toString());
+                    int e08X08RNum = Integer.parseInt(etE08X08R.getText().toString());
+                    int e16XNum = Integer.parseInt(etE16X.getText().toString());
+                    int e16TNum = Integer.parseInt(etE16T.getText().toString());
 
 
-                    //计算tc
 
-                    if(tcNum!=0&&!TextUtils.isEmpty(resultTC(tcNum))){
-                       allShow.append(resultTC(tcNum));
-                    }
-
-
+                    DBManager instance = new MyApplication().instance;
+                    instance.insertUser(new Statistics(count,"统计",adNum,daNum,tcNum,ptNum,e08X08TNum,e08X08RNum,e16XNum,e16TNum));
+                    count++;
+                    //TODO
 
 
                     if (adNum == 0 || daNum == 0) {
@@ -106,6 +113,32 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     }
+
+                    //计算tc
+
+                    if(tcNum!=0&&!TextUtils.isEmpty(resultTC(tcNum))){
+                        allShow.append(resultTC(tcNum));
+                    }
+                    if(ptNum!=0&&!TextUtils.isEmpty(etpt.getText().toString())){
+                        allShow.append(ptNum);
+                        allShow.append("*PT");
+                    }
+                    if(e08X08TNum!=0&&!TextUtils.isEmpty(etE08X08T.getText().toString())){
+                        allShow.append(e08X08TNum);
+                        allShow.append("*08X08T");
+                    }
+                    if(e08X08RNum!=0&&!TextUtils.isEmpty(etE08X08R.getText().toString())){
+                        allShow.append(e08X08RNum);
+                        allShow.append("*08X08R");
+                    }
+                    if(e16XNum!=0&&!TextUtils.isEmpty(etE16X.getText().toString())){
+                        allShow.append(e16XNum);
+                        allShow.append("*16X");
+                    }
+                    if(e16TNum!=0&&!TextUtils.isEmpty(etE16T.getText().toString())){
+                        allShow.append(e16TNum);
+                        allShow.append("*16T");
+                    }
                 }
 
                 tvshow.setText(allShow.toString());
@@ -115,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     /**
      * 计算TC
