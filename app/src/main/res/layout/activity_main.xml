@@ -5,6 +5,12 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <Button
+        android:id="@+id/btn_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="历史查询"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -158,9 +164,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="E16X"/>
+            android:text="E16R"/>
 
         <EditText
+            android:id="@+id/etE16R"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="2"

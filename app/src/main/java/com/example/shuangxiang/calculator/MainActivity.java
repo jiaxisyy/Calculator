@@ -1,5 +1,6 @@
 package com.example.shuangxiang.calculator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -26,15 +27,18 @@ public class MainActivity extends AppCompatActivity {
     private EditText etE08X08R;
     private EditText etE16X;
     private EditText etE16T;
+    private EditText etE16R;
     private StringBuilder allShow;
-    private int count=0;
+    private int count = 0;
+    private Button mBtnHistory;
+    private StatisticsDao mDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initialize();
-
+        mDao = MyApplication.getInstances().getDaoSession().getStatisticsDao();
         btngo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,7 +51,10 @@ public class MainActivity extends AppCompatActivity {
                 boolean emptyE08X08R = etE08X08R.getText().toString().isEmpty();
                 boolean emptyE16X = etE16X.getText().toString().isEmpty();
                 boolean emptyE16T = etE16T.getText().toString().isEmpty();
-                if (emptyAD || emptyDA || emptyTC||emptyPT||emptyE08X08T||emptyE08X08R||emptyE16X||emptyE16T) {
+                boolean emptyE16R = etE16R.getText().toString().isEmpty();
+
+                if (emptyAD || emptyDA ||
+                        emptyTC || emptyPT || emptyE08X08T || emptyE08X08R || emptyE16X || emptyE16T || emptyE16R) {
                     Toast.makeText(MainActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
                 } else {
                     int adNum = Integer.parseInt(etad.getText().toString());
@@ -58,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
                     int e08X08RNum = Integer.parseInt(etE08X08R.getText().toString());
                     int e16XNum = Integer.parseInt(etE16X.getText().toString());
                     int e16TNum = Integer.parseInt(etE16T.getText().toString());
+                    int e16RNum = Integer.parseInt(etE16R.getText().toString());
 
 
-
-                    DBManager instance = new MyApplication().instance;
-                    instance.insertUser(new Statistics(count,"统计",adNum,daNum,tcNum,ptNum,e08X08TNum,e08X08RNum,e16XNum,e16TNum));
-                    count++;
+                    mDao.insert(new Statistics(null,"时间", adNum, daNum, tcNum,
+                            ptNum,
+                            e08X08TNum, e08X08RNum, e16XNum, e16TNum, e16RNum));
                     //TODO
 
 
@@ -116,28 +123,32 @@ public class MainActivity extends AppCompatActivity {
 
                     //计算tc
 
-                    if(tcNum!=0&&!TextUtils.isEmpty(resultTC(tcNum))){
+                    if (tcNum != 0 && !TextUtils.isEmpty(resultTC(tcNum))) {
                         allShow.append(resultTC(tcNum));
                     }
-                    if(ptNum!=0&&!TextUtils.isEmpty(etpt.getText().toString())){
+                    if (ptNum != 0 && !TextUtils.isEmpty(etpt.getText().toString())) {
                         allShow.append(ptNum);
                         allShow.append("*PT");
                     }
-                    if(e08X08TNum!=0&&!TextUtils.isEmpty(etE08X08T.getText().toString())){
+                    if (e08X08TNum != 0 && !TextUtils.isEmpty(etE08X08T.getText().toString())) {
                         allShow.append(e08X08TNum);
                         allShow.append("*08X08T");
                     }
-                    if(e08X08RNum!=0&&!TextUtils.isEmpty(etE08X08R.getText().toString())){
+                    if (e08X08RNum != 0 && !TextUtils.isEmpty(etE08X08R.getText().toString())) {
                         allShow.append(e08X08RNum);
                         allShow.append("*08X08R");
                     }
-                    if(e16XNum!=0&&!TextUtils.isEmpty(etE16X.getText().toString())){
+                    if (e16XNum != 0 && !TextUtils.isEmpty(etE16X.getText().toString())) {
                         allShow.append(e16XNum);
                         allShow.append("*16X");
                     }
-                    if(e16TNum!=0&&!TextUtils.isEmpty(etE16T.getText().toString())){
+                    if (e16TNum != 0 && !TextUtils.isEmpty(etE16T.getText().toString())) {
                         allShow.append(e16TNum);
                         allShow.append("*16T");
+                    }
+                    if (e16RNum != 0 && !TextUtils.isEmpty(etE16R.getText().toString())) {
+                        allShow.append(e16RNum);
+                        allShow.append("*16R");
                     }
                 }
 
@@ -146,9 +157,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        mBtnHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity.this, HistoryActivity.class));
+
+            }
+        });
 
     }
-
 
 
     /**
@@ -176,13 +194,13 @@ public class MainActivity extends AppCompatActivity {
             if (y6 > 0) {
                 count4 = 1;
             }
-            String s=count4==0?"":count4 + "*04TC"+"\n";
-            return count6 + "*06TC" +"\n"+s;
+            String s = count4 == 0 ? "" : count4 + "*04TC" + "\n";
+            return count6 + "*06TC" + "\n" + s;
 
         } else {//小于6
 
             count4 = 1;
-            return count4 + "*04TC"+"\n";
+            return count4 + "*04TC" + "\n";
         }
     }
 
@@ -383,7 +401,7 @@ public class MainActivity extends AppCompatActivity {
         if (a4Number == a4Number1) {
             if (a2Number == a2Number1) {
                 return a4Number + "*" + 4 + "AD" + 4 + "DA" + "" +
-                        "\n" + a2Number + "*" + 2 + "AD" +"\n" + a2Number+ "*"+2 + "DA" + "";
+                        "\n" + a2Number + "*" + 2 + "AD" + "\n" + a2Number + "*" + 2 + "DA" + "";
             } else {
                 String typeString = a4Number1 + "*" + 4 + "AD" + 4 + "DA" + "\n";
                 String typrString = "";
@@ -440,6 +458,9 @@ public class MainActivity extends AppCompatActivity {
         etE08X08R = (EditText) findViewById(R.id.etE08X08R);
         etE16X = (EditText) findViewById(R.id.etE16X);
         etE16T = (EditText) findViewById(R.id.etE16T);
+        etE16R = (EditText) findViewById(R.id.etE16R);
+        mBtnHistory = (Button) findViewById(R.id.btn_history);
+
     }
 
 

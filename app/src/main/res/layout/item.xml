@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/item_ad"
+        style="@style/item"/>
+
+    <TextView
+        android:id="@+id/item_da"
+        style="@style/item"/>
+
+    <TextView
+        android:id="@+id/item_tc"
+        style="@style/item"/>
+
+    <TextView
+        android:id="@+id/item_pt"
+        style="@style/item"/>
+
+    <TextView
+        android:id="@+id/item_08T"
+        style="@style/item"/>
+
+    <TextView
+        android:id="@+id/item_08R"
+        style="@style/item"/>
+
+    <TextView
+        android:id="@+id/item_16X"
+        style="@style/item"/>
+
+    <TextView
+        android:id="@+id/item_16T"
+        style="@style/item"/>
+
+    <TextView
+        android:id="@+id/item_16R"
+        style="@style/item"/>
+
+
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.example.shuangxiang.calculator;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
+import org.greenrobot.greendao.annotation.Property;
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
@@ -10,22 +11,34 @@ import org.greenrobot.greendao.annotation.Generated;
 
 @Entity
 public class Statistics {
+
     @Id
-    private long id;
-    private String name;
+    private Long id;
+    @Property(nameInDb = "TIME")
+    private String time;
+    @Property(nameInDb = "AD")
     private int ad;
+    @Property(nameInDb = "DA")
     private int da;
+    @Property(nameInDb = "TC")
     private int tc;
+    @Property(nameInDb = "PT")
     private int pt;
+    @Property(nameInDb = "E08X08T")
     private int e08X08T;
+    @Property(nameInDb = "E08X08R")
     private int e08X08R;
+    @Property(nameInDb = "E16X")
     private int e16X;
+    @Property(nameInDb = "E16T")
     private int e16T;
-    @Generated(hash = 1047536990)
-    public Statistics(long id, String name, int ad, int da, int tc, int pt,
-            int e08X08T, int e08X08R, int e16X, int e16T) {
+    @Property(nameInDb = "E16R")
+    private int e16R;
+    @Generated(hash = 823447131)
+    public Statistics(Long id, String time, int ad, int da, int tc, int pt,
+            int e08X08T, int e08X08R, int e16X, int e16T, int e16R) {
         this.id = id;
-        this.name = name;
+        this.time = time;
         this.ad = ad;
         this.da = da;
         this.tc = tc;
@@ -34,21 +47,22 @@ public class Statistics {
         this.e08X08R = e08X08R;
         this.e16X = e16X;
         this.e16T = e16T;
+        this.e16R = e16R;
     }
     @Generated(hash = 1975114801)
     public Statistics() {
     }
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    public String getName() {
-        return this.name;
+    public String getTime() {
+        return this.time;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setTime(String time) {
+        this.time = time;
     }
     public int getAd() {
         return this.ad;
@@ -98,4 +112,13 @@ public class Statistics {
     public void setE16T(int e16T) {
         this.e16T = e16T;
     }
+    public int getE16R() {
+        return this.e16R;
+    }
+    public void setE16R(int e16R) {
+        this.e16R = e16R;
+    }
+
+
+
 }
